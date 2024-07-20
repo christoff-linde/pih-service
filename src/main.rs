@@ -1,4 +1,4 @@
-use server::{telemetry, Configuration, Db};
+use pih_service::{telemetry, Configuration, Db};
 use tokio::net::TcpListener;
 
 #[tokio::main]
@@ -10,14 +10,9 @@ async fn main() {
     tracing::debug!("Initialising configuration");
     let config = Configuration::new();
 
-    tracing::debug!("Initialising DB pool");
-    let db = Db::new(&config.db_dsn, config.db_pool_max_size)
-        .await
-        .expect("Failed to initialise db");
-
     // Initialize db pool.
     tracing::debug!("Initializing db pool");
-    let db = Db::new(&cfg.db_dsn, cfg.db_pool_max_size)
+    let db = Db::new(&config.db_dsn, config.db_pool_max_size)
         .await
         .expect("Failed to initialize db");
 
@@ -25,11 +20,11 @@ async fn main() {
     db.migrate().await.expect("Failed to run migrations");
 
     // Spin up our server.
-    tracing::info!("Starting server on {}", cfg.listen_address);
-    let listener = TcpListener::bind(&cfg.listen_address)
+    tracing::info!("Starting server on {}", config.listen_address);
+    let listener = TcpListener::bind(&config.listen_address)
         .await
         .expect("Failed to bind address");
-    let router = server::router(cfg, db);
+    let router = pih_service::router(config, db);
     axum::serve(listener, router)
         .await
         .expect("Failed to start server")
