@@ -4,3 +4,19 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.86"
+axum = "0.7.5"
+chrono = { version = "0.4.38", features = ["serde"] }
+dotenvy = "0.15.7"
+hyper = "1.4.1"
+reqwest = { version = "0.12.5", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1.0.204", features = ["derive"] }
+serde_json = "1.0.120"
+sqlx = { version = "0.7.4", features = ["postgres", "runtime-tokio-rustls", "macros", "migrate", "chrono", "json", "uuid"] }
+thiserror = "1.0.63"
+tokio = { version = "1.38.1", features = ["full"] }
+tower = "0.4.13"
+tower-http = { version = "0.5.2", features = ["cors", "normalize-path", "request-id", "timeout", "trace"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["json", "env-filter"] }
+uuid = { version = "1.10.0", features = ["v7", "serde"] }
